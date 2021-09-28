@@ -99,4 +99,25 @@ mutate(
 ```{r}
 arrange(litters_df, pups_born_alive)
 ```
+## `%>%`
+
+```{r}
+litters_data_raw = read_csv("./data/FAS_litters.csv")
+litters_cleaning = janitor::clean_names(litters_data_raw)
+litters_select = select(litters_cleaning, -pups_survive)
+litters_mutate = mutate(litters_select, wt_gain = gd18_weight - gd0_weight)
+littes_without_mising = drop_na(litters_mutate, gd0_weight)
+```
+
+Use the PIPE operate instead
+```{r}
+litter_df = 
+  read_csv("./data/FAS_litters.csv") %>% 
+  janitor::clean_names() %>% 
+  select(-pups_survive) %>% 
+  mutate (wt_gain = gd18_weight - gd0_weight) %>% 
+  drop_na(gd0_weight) %>% 
+  spec()
+```
+
 
